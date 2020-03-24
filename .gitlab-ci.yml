@@ -1,0 +1,42 @@
+image: node:12.16.1
+
+stages:
+  - install_dependencies
+  - lint
+  - test
+  - build
+
+cache:
+  paths:
+    - node_modules/
+    - yarn.lock
+    - dist/
+
+install_dependencies:
+  stage: install_dependencies
+  script:
+    - yarn
+  only:
+    - merge_requests
+
+lint_stage:
+  stage: lint
+  script:
+    - yarn lint
+    - yarn lint:css
+  only:
+    - merge_requests
+
+test_stage:
+  stage: test
+  script:
+    - yarn test:unit
+  only:
+    - merge_requests
+
+build_stage:
+  stage: build
+  script:
+    - yarn build
+  only:
+    - merge_requests
